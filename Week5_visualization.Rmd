@@ -1,0 +1,55 @@
+---
+title: "Insights into Governors' Speeches"
+author: "Shuang"
+date: "2023-06-24"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include=FALSE}
+# load the necessary libraries
+library(ggplot2)
+library(readr)
+library(dplyr)
+
+# load the data
+data <- read_csv("words.csv")
+```
+
+
+```{r bar}
+# get the top 10 most used phrases
+top_phrases <- data %>% 
+  mutate(total = d_speeches + r_speeches) %>% 
+  arrange(desc(total)) %>% 
+  head(10)
+
+# plot the bar chart
+ggplot(top_phrases, aes(x = reorder(phrase, total), y = total, fill = category)) +
+  geom_col() +
+  coord_flip() +
+  labs(x = "Phrase", y = "Total Usage", title = "Top 10 Most Used Phrases", fill = "Category") +
+  theme_minimal()
+```
+
+
+```{r scatter}
+# plot the scatterplot
+ggplot(data, aes(x = percent_of_d_speeches, y = percent_of_r_speeches, color = category)) +
+  geom_point(alpha = 0.5) +
+  labs(x = "Percentage of Democratic Speeches", y = "Percentage of Republican Speeches", 
+       title = "Phrase Usage in Democratic vs Republican Speeches", color = "Category") +
+  theme_minimal()
+```
+
+
+```{r histogram}
+# plot the histogram
+ggplot(data, aes(x = pval)) +
+  geom_histogram(binwidth = 0.1, fill = "skyblue", color = "black") +
+  labs(x = "p-value", y = "Frequency", title = "Histogram of p-values") +
+  theme_minimal()
+```
