@@ -15,23 +15,25 @@ library(ggplot2)
 library(readr)
 library(dplyr)
 
-# load the data
+# Load the data
 data <- read_csv("words.csv")
 ```
 
 
 ```{r bar}
-# get the top 10 most used phrases
-top_phrases <- data %>% 
-  mutate(total = d_speeches + r_speeches) %>% 
-  arrange(desc(total)) %>% 
-  head(10)
+# Create a new variable 'total' that sums the Democratic and Republican speeches
+data$total <- data$d_speeches + data$r_speeches
 
-# plot the bar chart
-ggplot(top_phrases, aes(x = reorder(phrase, total), y = total, fill = category)) +
-  geom_col() +
+# Get the top 30 phrases by total usage
+top_phrases <- data %>% 
+  arrange(desc(total)) %>% 
+  head(30)
+
+# Create a bar plot for the total usage of each of the top 30 phrases
+ggplot(top_phrases, aes(x = reorder(phrase, total), y = total)) +
+  geom_bar(stat="identity", fill="steelblue") +
   coord_flip() +
-  labs(x = "Phrase", y = "Total Usage", title = "Top 10 Most Used Phrases", fill = "Category") +
+  labs(x = "Phrase", y = "Total Usage", title = "Top 30 Most Used Phrases") +
   theme_minimal()
 ```
 
