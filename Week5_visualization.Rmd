@@ -30,10 +30,11 @@ top_phrases <- data %>%
   head(30)
 
 # Create a bar plot for the total usage of each of the top 30 phrases
-ggplot(top_phrases, aes(x = reorder(phrase, total), y = total)) +
-  geom_bar(stat="identity", fill="steelblue") +
+# plot the bar chart
+ggplot(top_phrases, aes(x = reorder(phrase, total), y = total, fill = category)) +
+  geom_col() +
   coord_flip() +
-  labs(x = "Phrase", y = "Total Usage", title = "Top 30 Most Used Phrases") +
+  labs(x = "Phrase", y = "Total Usage", title = "Top 10 Most Used Phrases", fill = "Category") +
   theme_minimal()
 ```
 
